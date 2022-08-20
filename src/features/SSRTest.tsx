@@ -1,9 +1,9 @@
 import * as THREE from "three";
 import { useEffect, useState, useRef } from "react";
-import { Canvas, useFrame } from "@react-three/fiber";
+import { Canvas, MeshProps, useFrame } from "@react-three/fiber";
 import { RoundedBox, useCursor } from "@react-three/drei";
 import { Effects } from "./Effects";
-import { RagdollPhysics } from "./RagdollPhysics";
+// import { RagdollPhysics } from "./RagdollPhysics";
 
 export const SSRTest = () => (
   <Canvas
@@ -23,10 +23,24 @@ export const SSRTest = () => (
     <group position={[2, -2, 0]}>
       {/* <Sphere /> */}
       <Transition />
-      <Video />
-      <group rotation={[0, -Math.PI / 4, 0]}>
+      {/* <Video
+        position={[-2, 4, 10]}
+        rotation={[0, Math.PI / 2, 0]}
+        scale={[34, 20, 2]}
+      /> */}
+      <Video
+        position={[-2, 4, 0]}
+        rotation={[0, Math.PI / 2, 0]}
+        scale={[17, 10, 1]}
+      />
+      {/* <Video
+        position={[10, 0, 0]}
+        rotation={[0, Math.PI / 2, 0]}
+        scale={[8.5, 5, 0.5]}
+      /> */}
+      {/* <group rotation={[0, -Math.PI / 4, 0]}>
         <RagdollPhysics />
-      </group>
+      </group> */}
     </group>
     <Effects />
   </Canvas>
@@ -91,7 +105,7 @@ const Plane = ({ color, ...props }: any) => (
   </RoundedBox>
 );
 
-function Video() {
+function Video(props?: MeshProps) {
   const [video] = useState(() =>
     Object.assign(document.createElement("video"), {
       // src: "/drei_r.mp4",
@@ -104,11 +118,7 @@ function Video() {
   );
   useEffect(() => void video.play(), [video]);
   return (
-    <mesh
-      position={[-2, 4, 0]}
-      rotation={[0, Math.PI / 2, 0]}
-      scale={[17, 10, 1]}
-    >
+    <mesh {...props}>
       <planeGeometry />
       <meshBasicMaterial toneMapped={false}>
         <videoTexture
