@@ -1,8 +1,9 @@
 import * as THREE from "three";
 import { useEffect, useState, useRef } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
-import { RoundedBox, useCursor, PerspectiveCamera } from "@react-three/drei";
+import { RoundedBox, useCursor } from "@react-three/drei";
 import { Effects } from "./Effects";
+import { RagdollPhysics } from "./RagdollPhysics";
 
 export const SSRTest = () => (
   <Canvas
@@ -23,6 +24,9 @@ export const SSRTest = () => (
       {/* <Sphere /> */}
       <Transition />
       <Video />
+      <group rotation={[0, -Math.PI / 4, 0]}>
+        <RagdollPhysics />
+      </group>
     </group>
     <Effects />
   </Canvas>
