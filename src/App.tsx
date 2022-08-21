@@ -1,7 +1,7 @@
 import { Center, ChakraProvider } from "@chakra-ui/react";
-import { RagdollPhysicsCanvas } from "./features/RagdollPhysics";
-// import { Sample } from "./features/Sample";
-import { SSRTest } from "./features/SSRTest";
+import { RagdollPhysicsCanvas } from "./canvas/scenes/RagdollPhysics";
+import { Sample } from "./canvas/scenes/Sample"
+import { SSRTest } from "./canvas/scenes/SSRTest";
 
 function App() {
   return (

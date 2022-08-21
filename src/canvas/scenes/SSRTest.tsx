@@ -2,7 +2,8 @@ import * as THREE from "three";
 import { useEffect, useState, useRef } from "react";
 import { Canvas, MeshProps, useFrame } from "@react-three/fiber";
 import { RoundedBox, useCursor } from "@react-three/drei";
-import { Effects } from "./Effects";
+import { Effects } from "../features/Effects";
+import videoSrc from "../../assets/videos/Redial_Final.mp4"
 // import { RagdollPhysics } from "./RagdollPhysics";
 
 export const SSRTest = () => (
@@ -110,7 +111,7 @@ function Video(props?: MeshProps) {
     Object.assign(document.createElement("video"), {
       // src: "/drei_r.mp4",
       // src: " https://www.youtube.com/watch?v=SlRfwbD2riE"
-      src: "/Redial_Final.mp4",
+      src: videoSrc,
       crossOrigin: "Anonymous",
       loop: true,
       muted: true,
