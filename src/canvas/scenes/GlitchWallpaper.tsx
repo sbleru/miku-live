@@ -1,8 +1,9 @@
 import * as THREE from "three";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Canvas, MeshProps, useFrame } from "@react-three/fiber";
-import { Effects } from "../features/Effects";
-import videoSrc from "../../assets/videos/Redial_Final.mp4"
+import { EffectGlitch } from "../features/EffectGlitch";
+import videoSrc from "../../assets/videos/Redial_Final.mp4";
+import { useCursor } from "@react-three/drei";
 
 export const GlitchWallpaper = () => (
   <Canvas
@@ -15,24 +16,40 @@ export const GlitchWallpaper = () => (
     }}
     camera={{ position: [250, 225, 250], fov: 15 }}
   >
-    <color attach="background" args={["#151520"]} />
-    <hemisphereLight intensity={0.5} />
-    <directionalLight position={[0, 2, 5]} castShadow intensity={1} />
-    <group position={[2, -2, 0]}>
-      <Transition />
-      <Video
-        position={[-2, 4, 0]}
-        rotation={[0, Math.PI / 4, 0]}
-        scale={[17, 10, 1]}
-      />
-    </group>
-    <Effects />
+    <Scene />
   </Canvas>
 );
 
-const Transition = () => {
+const Scene = () => {
+  const [zoom, set] = useState(true);
+  const startVideo = useCallback(() => {
+    set(!zoom);
+  }, [zoom, set]);
+  return (
+    <>
+      <color attach="background" args={["#151520"]} />
+      <hemisphereLight intensity={0.5} />
+      <directionalLight position={[0, 2, 5]} castShadow intensity={1} />
+      <group position={[2, -2, 0]}>
+        <Transition zoom={zoom} />
+        <Video
+          position={[-2, 4, 0]}
+          rotation={[0, Math.PI / 4, 0]}
+          scale={[17, 10, 1]}
+        />
+      </group>
+      {/* <Sphere startVideo={startVideo} /> */}
+      <EffectGlitch />
+    </>
+  );
+};
+
+const Transition = (props: { zoom: boolean }) => {
   useFrame((state) => {
-    state.camera.position.lerp({ x: 50, y: 25, z: 50 } as any, 0.03);
+    state.camera.position.lerp(
+      { x: 50, y: 25, z: props.zoom ? 50 : -50 } as any,
+      0.03
+    );
     state.camera.lookAt(0, 0, 0);
   });
   return <></>;
@@ -61,3 +78,27 @@ function Video(props?: MeshProps) {
     </mesh>
   );
 }
+
+const Sphere = (props: { startVideo: () => void }) => {
+  const ref = useRef<any>();
+  const [active, setActive] = useState(false);
+  useCursor(active);
+  return (
+    <mesh
+      ref={ref}
+      receiveShadow
+      castShadow
+      // onClick={() => set(!zoom)}
+      onClick={props.startVideo}
+      onPointerOver={() => setActive(true)}
+      onPointerOut={() => setActive(false)}
+    >
+      <sphereGeometry args={[0.8, 64, 64]} />
+      <meshStandardMaterial
+        color={active ? "lightgreen" : "lightblue"}
+        roughness={0}
+        metalness={0.25}
+      />
+    </mesh>
+  );
+};
