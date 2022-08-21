@@ -33,7 +33,7 @@ const Scene = () => {
       <group position={[2, -2, 0]}>
         <Transition zoom={zoom} />
         <Video
-          position={[-2, 4, 0]}
+          position={[-2, 2, 0]}
           rotation={[0, Math.PI / 4, 0]}
           scale={[17, 10, 1]}
         />
@@ -56,6 +56,7 @@ const Transition = (props: { zoom: boolean }) => {
 };
 
 function Video(props?: MeshProps) {
+  const ref = useRef<THREE.Mesh>(null);
   const [video] = useState(() =>
     Object.assign(document.createElement("video"), {
       src: videoSrc,
@@ -65,8 +66,14 @@ function Video(props?: MeshProps) {
     })
   );
   useEffect(() => void video.play(), [video]);
+  // useFrame((state) => {
+  //   if (!ref.current?.position) return;
+  //   ref.current.position.y = Math.sin(state.clock.getElapsedTime() / 2);
+  // });
   return (
-    <mesh {...props}>
+    <mesh
+    ref={ref}
+     {...props}>
       <planeGeometry />
       <meshBasicMaterial toneMapped={false}>
         <videoTexture
@@ -80,9 +87,13 @@ function Video(props?: MeshProps) {
 }
 
 const Sphere = (props: { startVideo: () => void }) => {
-  const ref = useRef<any>();
+  const ref = useRef<THREE.Mesh>(null);
   const [active, setActive] = useState(false);
   useCursor(active);
+  useFrame((state) => {
+    if (!ref.current?.position) return;
+    ref.current.position.y = Math.sin(state.clock.getElapsedTime() / 2);
+  });
   return (
     <mesh
       ref={ref}
