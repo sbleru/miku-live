@@ -3,6 +3,7 @@ import { RagdollPhysicsCanvas } from "./canvas/scenes/RagdollPhysics";
 import { Sample } from "./canvas/scenes/Sample"
 import { SSRTest } from "./canvas/scenes/SSRTest";
 import { GlitchWallpaper } from "./canvas/scenes/GlitchWallpaper";
+import { DanceSample } from "./canvas/scenes/DanceSample";
 
 function App() {
   return (
@@ -11,7 +12,8 @@ function App() {
         {/* <Sample /> */}
         {/* <SSRTest /> */}
         {/* <RagdollPhysicsCanvas /> */}
-        <GlitchWallpaper /> 
+        {/* <GlitchWallpaper />  */}
+        <DanceSample />
       </Center>
     </ChakraProvider>
   );
