@@ -36,7 +36,7 @@ import {
 } from "@react-three/postprocessing";
 import { GlitchMode } from "postprocessing";
 import { Vector2 } from "three";
-import { useKey } from "react-use";
+import { useEvent, useKey } from "react-use";
 
 export const DanceSample = () => (
   <Canvas
@@ -168,6 +168,7 @@ const useAnimation = ({
   const cameraAnimations = useAnimations(camera.animations);
   const [audio] = useState(new Audio(music));
   const [start, setStart] = useState(false);
+  const [startSP, setStartSP] = useState(false);
 
   useEffect(() => {
     cameraAnimations.actions?.camera?.play();
@@ -203,8 +204,8 @@ const useAnimation = ({
          */
         audio.paused ? audio.play() : audio.pause();
       } else {
-        modelAnimations.actions?.dance?.play();
         startAudio();
+        modelAnimations.actions?.dance?.play();
         setStart(true);
       }
     }
@@ -213,6 +214,12 @@ const useAnimation = ({
    * Can play or pause by pressing space key
    */
   useKey("p", togglePlay, {}, [togglePlay]);
+
+  useEvent("touchstart", (e) => {
+    if (startSP) return;
+    togglePlay();
+    setStartSP(true);
+  })
 
   return {
     modelRef: modelAnimations.ref,
@@ -378,6 +385,14 @@ const AnimationCamera = () => {
     {},
     [setPressedKeyCode, setPressedSpaceKey]
   );
+
+  /**
+   * 
+   */
+  useEvent("touchstart", (e) => {
+    setPressedKeyCode("Space");
+    setPressedSpaceKey(true)
+  })
 
   useFrame((state) => {
     switch (pressedKeyCode) {
