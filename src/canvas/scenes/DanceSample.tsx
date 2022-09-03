@@ -1,8 +1,16 @@
-import { Suspense, useCallback, useEffect, useRef, useState } from "react";
+import {
+  Suspense,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import {
   Html,
   OrbitControls,
+  Sparkles,
   useAnimations,
   useCursor,
   useProgress,
@@ -62,6 +70,7 @@ const Scene = () => {
           />
         )}
       </group>
+      <StageSparkles />
       <PlaySphere startVideo={play} />
       <Effects />
       <OrbitControls />
@@ -229,6 +238,27 @@ export const Effects = () => {
         ratio={0.85} // Threshold for strong glitches, 0 - no weak glitches, 1 - no strong glitches.
       /> */}
     </EffectComposer>
+  );
+};
+
+const StageSparkles = () => {
+  const size = 100;
+  const amount = 100;
+  const sizes = useMemo(() => {
+    return new Float32Array(
+      Array.from({ length: amount }, () => Math.random() * size)
+    );
+  }, [size, amount]);
+  return (
+    <Sparkles
+      opacity={1}
+      speed={1}
+      noise={1}
+      size={sizes}
+      count={amount}
+      scale={[100, 100, 100]}
+      color={"lightgreen"}
+    />
   );
 };
 
