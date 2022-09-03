@@ -37,6 +37,7 @@ import {
 } from "@react-three/postprocessing";
 import { GlitchMode } from "postprocessing";
 import { Vector2 } from "three";
+import { useKey } from "react-use";
 
 export const DanceSample = () => (
   <Canvas
@@ -61,7 +62,7 @@ const Loader = () => {
 };
 
 const Scene = () => {
-  const [status, setStatus] = useState("beforePlay");
+  const [status, setStatus] = useState("playing");
   const play = useCallback(() => {
     setStatus("playing");
   }, []);
@@ -167,27 +168,52 @@ const useAnimation = ({
   const modelAnimations = useAnimations(model.animations);
   const cameraAnimations = useAnimations(camera.animations);
   const [audio] = useState(new Audio(music));
-  /**
-   * Start animation
-   */
-  useEffect(() => {
-    modelAnimations.actions?.dance?.play();
-  });
+  const [start, setStart] = useState(false);
 
   useEffect(() => {
     cameraAnimations.actions?.camera?.play();
   });
 
   /**
-   * Start audio
+   * FIXME 初期ポーズを1フレーム目にしたい
    */
-  useEffect(() => {
-    (async () => {
+  // useEffect(() => {
+  //   if (modelAnimations.actions?.dance) {
+  //     modelAnimations.actions?.dance?.play();
+  //     modelAnimations.actions.dance.paused = true;
+  //   }
+  // });
+
+  /**
+   * Toggle animation and audio
+   */
+  const togglePlay = useCallback(() => {
+    const startAudio = async () => {
       await new Promise((resolve) => setTimeout(resolve, (160 / 30) * 1000));
       await audio.play();
-      // audio.volume = 0.01;
-    })();
-  });
+    };
+    if (modelAnimations.actions?.dance) {
+      if (start) {
+        /**
+         * Toggle animation
+         */
+        modelAnimations.actions.dance.paused =
+          !modelAnimations.actions.dance.paused;
+        /**
+         * Toggle audio
+         */
+        audio.paused ? audio.play() : audio.pause();
+      } else {
+        modelAnimations.actions?.dance?.play();
+        startAudio();
+        setStart(true);
+      }
+    }
+  }, [modelAnimations.actions?.dance, start, setStart, audio]);
+  /**
+   * Can play or pause by pressing space key
+   */
+  useKey(" ", togglePlay, {}, [togglePlay]);
 
   return {
     modelRef: modelAnimations.ref,
