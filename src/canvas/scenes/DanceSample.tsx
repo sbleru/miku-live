@@ -9,15 +9,23 @@ import {
 import { Canvas, useFrame } from "@react-three/fiber";
 import {
   Html,
+  MeshReflectorMaterial,
   OrbitControls,
   Sparkles,
   useAnimations,
   useCursor,
   useProgress,
+  useTexture,
 } from "@react-three/drei";
 import { useLoader } from "@react-three/fiber";
 import { MMDLoader } from "three/examples/jsm/loaders/MMDLoader";
-import { AnimationClip, PerspectiveCamera, SkinnedMesh } from "three";
+import {
+  AnimationClip,
+  Mesh,
+  PerspectiveCamera,
+  RepeatWrapping,
+  SkinnedMesh,
+} from "three";
 import music from "/assets/examples_models_mmd_audios_wavefile_short.mp3";
 import {
   EffectComposer,
@@ -70,6 +78,7 @@ const Scene = () => {
           />
         )}
       </group>
+      <ReflectionFloor position={[0, -11, 0]} />
       <StageSparkles />
       <PlaySphere startVideo={play} />
       <Effects />
@@ -259,6 +268,66 @@ const StageSparkles = () => {
       scale={[100, 100, 100]}
       color={"lightgreen"}
     />
+  );
+};
+
+/**
+ * @see https://github.com/pmndrs/drei#meshreflectormaterial
+ */
+const ReflectionFloor = ({
+  position,
+  blur,
+  depthScale,
+  distortion,
+  normalScale,
+  reflectorOffset,
+}: {
+  position?: [number, number, number];
+  blur?: [number, number];
+  depthScale?: number;
+  distortion?: number;
+  normalScale?: number;
+  reflectorOffset?: number;
+}) => {
+  const roughness = useTexture("assets/roughness_floor.jpeg");
+  const normal = useTexture("assets/NORM.jpg");
+  const distortionMap = useTexture("assets/dist_map.jpeg");
+  const _normalScale = useMemo(
+    () => new Vector2(normalScale || 0),
+    [normalScale]
+  );
+  useEffect(() => {
+    distortionMap.wrapS = distortionMap.wrapT = RepeatWrapping;
+    distortionMap.repeat.set(4, 4);
+  }, [distortionMap]);
+  return (
+    <mesh
+      rotation={[-Math.PI / 2, 0, Math.PI / 2]}
+      position={position || [0, 0, 0]}
+    >
+      <circleGeometry args={[100, 100]} />
+      <MeshReflectorMaterial
+        resolution={1024}
+        mirror={0.75}
+        mixBlur={10}
+        mixStrength={2}
+        blur={blur || [0, 0]}
+        minDepthThreshold={0.8}
+        maxDepthThreshold={1.2}
+        depthScale={depthScale || 0}
+        depthToBlurRatioBias={0.2}
+        // debug={0}
+        distortion={distortion || 0}
+        distortionMap={distortionMap}
+        color="#a0a0a0"
+        metalness={0.5}
+        roughnessMap={roughness}
+        roughness={1}
+        normalMap={normal}
+        normalScale={_normalScale}
+        reflectorOffset={reflectorOffset}
+      />
+    </mesh>
   );
 };
 
