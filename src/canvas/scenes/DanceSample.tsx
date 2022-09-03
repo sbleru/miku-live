@@ -20,11 +20,10 @@ import {
 import { useLoader } from "@react-three/fiber";
 import { MMDLoader } from "three/examples/jsm/loaders/MMDLoader";
 import {
-  AnimationClip,
-  Mesh,
   PerspectiveCamera,
   RepeatWrapping,
   SkinnedMesh,
+  Vector3,
 } from "three";
 import music from "/assets/examples_models_mmd_audios_wavefile_short.mp3";
 import {
@@ -81,9 +80,9 @@ const Scene = () => {
       </group>
       <ReflectionFloor position={[0, -11, 0]} />
       <StageSparkles />
-      <PlaySphere startVideo={play} />
+      {/* <PlaySphere startVideo={play} /> */}
       <Effects />
-      <OrbitControls />
+      <AnimationCamera />
     </>
   );
 };
@@ -213,7 +212,7 @@ const useAnimation = ({
   /**
    * Can play or pause by pressing space key
    */
-  useKey(" ", togglePlay, {}, [togglePlay]);
+  useKey("p", togglePlay, {}, [togglePlay]);
 
   return {
     modelRef: modelAnimations.ref,
@@ -251,6 +250,8 @@ const PlaySphere = (props: { startVideo: () => void }) => {
 };
 
 const vector2 = (x: number, y: number) => new Vector2(x, y);
+
+const vector3 = (x: number, y: number, z: number) => new Vector3(x, y, z);
 
 export const Effects = () => {
   return (
@@ -355,6 +356,76 @@ const ReflectionFloor = ({
       />
     </mesh>
   );
+};
+
+const AnimationCamera = () => {
+  const [pressedKeyCode, setPressedKeyCode] = useState("");
+  const [pressedSpaceKey, setPressedSpaceKey] = useState(false);
+
+  useKey(
+    (e) => {
+      setPressedKeyCode(e.code);
+      switch (e.code) {
+        case "Space":
+          setPressedSpaceKey(true);
+          break;
+        default:
+          break;
+      }
+      return true;
+    },
+    void 0,
+    {},
+    [setPressedKeyCode, setPressedSpaceKey]
+  );
+
+  useFrame((state) => {
+    switch (pressedKeyCode) {
+      case "KeyA":
+        state.camera.position.lerp(vector3(0, 0, 90), 0.03);
+        break;
+      case "KeyS":
+        state.camera.position.lerp(vector3(0, 0, 300), 0.03);
+        break;
+      case "KeyD":
+        state.camera.position.lerp(vector3(-80, 80, 80), 0.03);
+        break;
+      case "KeyF":
+        state.camera.position.lerp(vector3(-80, 80, -80), 0.03);
+        break;
+      case "KeyG":
+        state.camera.position.lerp(vector3(80, 80, -80), 0.03);
+        break;
+      case "KeyH":
+        state.camera.position.lerp(vector3(80, 80, 80), 0.03);
+        break;
+      case "KeyJ":
+        state.camera.position.lerp(vector3(80, -20, 90), 0.03);
+        break;
+      case "KeyK":
+        state.camera.position.lerp(vector3(0, 80, 0), 0.03);
+        break;
+      case "KeyL":
+        state.camera.position.lerp(vector3(0, 200, 300), 0.03);
+        break;
+      case "Space":
+        // FIXME Rondom camera work
+        state.camera.position.lerp(vector3(30, 30, 90), 0.07);
+        break;
+      case "KeyP":
+        // Do nothing if paused
+        break;
+      default:
+        state.camera.position.lerp(vector3(50, 50, 50), 0.03);
+        break;
+    }
+    state.camera.lookAt(0, 0, 0);
+    if (pressedSpaceKey) {
+      state.camera.position.set(100, 30, -100);
+      setPressedSpaceKey(false);
+    }
+  });
+  return <OrbitControls />;
 };
 
 // export const Setup = ({
