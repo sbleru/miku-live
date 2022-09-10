@@ -19,12 +19,7 @@ import {
 } from "@react-three/drei";
 import { useLoader } from "@react-three/fiber";
 import { MMDLoader } from "three/examples/jsm/loaders/MMDLoader";
-import {
-  PerspectiveCamera,
-  RepeatWrapping,
-  SkinnedMesh,
-  Vector3,
-} from "three";
+import { PerspectiveCamera, RepeatWrapping, SkinnedMesh, Vector3 } from "three";
 import music from "/assets/examples_models_mmd_audios_wavefile_short.mp3";
 import {
   EffectComposer,
@@ -135,20 +130,14 @@ const MmdModel = ({
   // const mmd = useLoader(loader, modelUrl);
   // return model ? <primitive object={model} dispose={null} /> : null;
 
-  return model ? <MmdModelWithAnimation model={model} camera={camera} /> : null;
+  return model ? <MmdModelWithAnimation model={model} /> : null;
 
   // const mmd = useLoader(MMDLoader, url);
   // return <primitive object={mmd} dispose={null} />;
 };
 
-const MmdModelWithAnimation = ({
-  model,
-  camera,
-}: {
-  model: SkinnedMesh;
-  camera: PerspectiveCamera;
-}) => {
-  const { modelRef, cameraRef } = useAnimation({ model, camera });
+const MmdModelWithAnimation = ({ model }: { model: SkinnedMesh }) => {
+  const { modelRef } = useAnimation({ model });
   return (
     <>
       <primitive ref={modelRef} object={model} dispose={null} />
@@ -157,22 +146,11 @@ const MmdModelWithAnimation = ({
   );
 };
 
-const useAnimation = ({
-  model,
-  camera,
-}: {
-  model: SkinnedMesh;
-  camera: PerspectiveCamera;
-}) => {
+const useAnimation = ({ model }: { model: SkinnedMesh }) => {
   const modelAnimations = useAnimations(model.animations);
-  const cameraAnimations = useAnimations(camera.animations);
   const [audio] = useState(new Audio(music));
   const [start, setStart] = useState(false);
   const [startSP, setStartSP] = useState(false);
-
-  useEffect(() => {
-    cameraAnimations.actions?.camera?.play();
-  });
 
   /**
    * FIXME 初期ポーズを1フレーム目にしたい
@@ -219,11 +197,10 @@ const useAnimation = ({
     if (startSP) return;
     togglePlay();
     setStartSP(true);
-  })
+  });
 
   return {
     modelRef: modelAnimations.ref,
-    cameraRef: cameraAnimations.ref,
   };
 };
 
@@ -387,12 +364,12 @@ const AnimationCamera = () => {
   );
 
   /**
-   * 
+   *
    */
   useEvent("touchstart", (e) => {
     setPressedKeyCode("Space");
-    setPressedSpaceKey(true)
-  })
+    setPressedSpaceKey(true);
+  });
 
   useFrame((state) => {
     switch (pressedKeyCode) {
