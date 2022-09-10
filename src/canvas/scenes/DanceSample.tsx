@@ -17,19 +17,15 @@ import {
   useProgress,
   useTexture,
 } from "@react-three/drei";
-import { useLoader } from "@react-three/fiber";
 import { MMDLoader } from "three/examples/jsm/loaders/MMDLoader";
 import { PerspectiveCamera, RepeatWrapping, SkinnedMesh, Vector3 } from "three";
 import music from "/assets/examples_models_mmd_audios_wavefile_short.mp3";
 import {
   EffectComposer,
   DepthOfField,
-  Bloom,
   Noise,
   Vignette,
-  Glitch,
 } from "@react-three/postprocessing";
-import { GlitchMode } from "postprocessing";
 import { Vector2 } from "three";
 import { useEvent, useKey } from "react-use";
 

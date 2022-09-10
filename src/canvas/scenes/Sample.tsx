@@ -1,7 +1,6 @@
 import * as THREE from "three";
 import React, { useRef, useState } from "react";
 import { Canvas, useFrame, ThreeElements } from "@react-three/fiber";
-import { PerspectiveCamera } from "@react-three/drei";
 import { Vector3 } from "three";
 
 const Box = (props: ThreeElements["mesh"]) => {

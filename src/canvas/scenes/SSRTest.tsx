@@ -3,7 +3,7 @@ import { useEffect, useState, useRef } from "react";
 import { Canvas, MeshProps, useFrame } from "@react-three/fiber";
 import { RoundedBox, useCursor } from "@react-three/drei";
 import { Effects } from "../features/Effects";
-import videoSrc from "../../assets/videos/Redial_Final.mp4"
+import videoSrc from "../../assets/videos/Redial_Final.mp4";
 // import { RagdollPhysics } from "./RagdollPhysics";
 
 export const SSRTest = () => (

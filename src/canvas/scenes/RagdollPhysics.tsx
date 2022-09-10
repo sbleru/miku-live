@@ -1,6 +1,6 @@
 import { Canvas } from "@react-three/fiber";
 import { Physics } from "@react-three/cannon";
-import { Cursor } from "../features/Drag"
+import { Cursor } from "../features/Drag";
 import { Guy } from "../features/Guy";
 import { Floor } from "../features/Floor";
 import { Chair } from "../features/Furnitures";
