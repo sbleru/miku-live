@@ -5,23 +5,19 @@ importers:
   .:
     specifiers:
       turbo: ^1.7.4
-    devDependencies:
-      turbo: 1.7.4
-
-  apps/lib-a:
-    specifiers:
       typescript: ^4.9.5
     devDependencies:
+      turbo: 1.7.4
       typescript: 4.9.5
+
+  apps/lib-a:
+    specifiers: {}
 
   apps/lib-b:
     specifiers:
-      lib-a: workspace:^1.0.0
-      typescript: ^4.9.5
+      lib-a: workspace:*
     dependencies:
       lib-a: link:../lib-a
-    devDependencies:
-      typescript: 4.9.5
 
 packages:
 
