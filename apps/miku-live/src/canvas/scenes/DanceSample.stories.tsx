@@ -1,3 +1,4 @@
+// export {};
 import { ComponentProps } from "react";
 import { DanceSample } from "./DanceSample";
 import { ComponentMeta, ComponentStoryObj } from "@storybook/react";
