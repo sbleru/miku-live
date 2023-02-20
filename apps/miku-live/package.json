@@ -9,7 +9,7 @@
     "format": "prettier --write \"**/*.{ts,tsx,md,jsx}\"",
     "lint": "eslint .",
     "lint-fix": "eslint . --fix",
-    "storybook": "start-storybook -p 6006",
+    "storybook": "storybook dev -p 6006",
     "build-storybook": "build-storybook",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -34,6 +34,14 @@
   "devDependencies": {
     "@types/react": "^18.0.28",
     "@types/react-dom": "^18.0.10",
-    "@types/three": "^0.143.0"
+    "@types/three": "^0.143.0",
+    "@storybook/addon-essentials": "^7.0.0-beta.51",
+    "@storybook/addon-interactions": "^7.0.0-beta.51",
+    "@storybook/addon-links": "^7.0.0-beta.51",
+    "@storybook/blocks": "^7.0.0-beta.51",
+    "@storybook/react": "^7.0.0-beta.51",
+    "@storybook/react-vite": "^7.0.0-beta.51",
+    "@storybook/testing-library": "^0.0.14-next.1",
+    "prop-types": "^15.8.1"
   }
 }

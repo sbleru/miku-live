@@ -16,8 +16,16 @@
   },
   "devDependencies": {
     "prettier": "^2.8.4",
+    "storybook": "7.0.0-beta.46",
     "turbo": "^1.7.4",
     "typescript": "^4.9.5",
     "vite": "^4.1.1"
+  },
+  "pnpm": {
+    "overrides": {
+      "glob-parent@<5.1.2": ">=5.1.2",
+      "trim-newlines@<3.0.1": ">=3.0.1",
+      "trim@<0.0.3": ">=0.0.3"
+    }
   }
 }
