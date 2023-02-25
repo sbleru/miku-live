@@ -1,7 +1,10 @@
 // export {};
 import { ComponentProps } from "react";
 import { DanceSample } from "./DanceSample";
-import { Meta as ComponentMeta, StoryObj as ComponentStoryObj } from "@storybook/react";
+import {
+  Meta as ComponentMeta,
+  StoryObj as ComponentStoryObj,
+} from "@storybook/react";
 import { Center } from "@chakra-ui/react";
 
 type Meta = ComponentMeta<typeof DanceSample>;

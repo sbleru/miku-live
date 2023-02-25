@@ -274,6 +274,8 @@ const StageSparkles = () => {
       count={amount}
       scale={[100, 100, 100]}
       color={"lightgreen"}
+      matrixWorldAutoUpdate={undefined}
+      getObjectsByProperty={undefined}
     />
   );
 };

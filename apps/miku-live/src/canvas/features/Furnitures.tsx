@@ -158,6 +158,9 @@ export function Lamp(props: any) {
         anglePower={5}
         intensity={1}
         opacity={0.2}
+        map={undefined}
+        matrixWorldAutoUpdate={undefined}
+        getObjectsByProperty={undefined}
       />
       <primitive object={target} position={[0, -1, 0]} />
     </mesh>

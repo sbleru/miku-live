@@ -2,4 +2,4 @@
 
 ## TODO
 
-- [] miku-live app use storybook-util pacakge
+- [ ] miku-live app use storybook-util pacakge
